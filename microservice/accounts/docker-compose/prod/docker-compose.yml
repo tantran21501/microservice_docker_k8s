@@ -1,0 +1,65 @@
+version: "3.8"
+services:
+  configserver:
+    image: tantran2/configserver:latest
+    mem_reservation: 700m
+    ports:
+      - "8071:8071"
+    networks:
+      - bank-network
+  accounts:
+    image: tantran2/microservice_accounts_service:latest
+    mem_reservation: 700m
+    ports:
+      - "8080:8080"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+  loans:
+    image: tantran2/microservice_loans_service:latest
+    mem_reservation: 700m
+    ports:
+      - "8090:8090"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+  cards:
+    image: tantran2/microservice_cards_service:latest
+    mem_reservation: 700m
+    ports:
+      - "9000:9000"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+networks:
+  bank-network:

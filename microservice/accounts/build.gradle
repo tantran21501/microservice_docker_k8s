@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.palantir.docker' version '0.35.0' // thư viện docker
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+repositories {
+    mavenCentral()
+    maven { url 'https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates' }
+}
+ext {
+    set('springCloudVersion', "2022.0.2")
+}
+
+bootJar {
+    archiveFileName = "accounts-0.0.1-SNAPSHOT.jar"
+    destinationDirectory = file("$buildDir/libs")
+}
+
+bootBuildImage {
+    imageName = 'tantran2/microservice_accounts_service' // đổi tên image khi build
+}
+docker {
+    name "${project.name}"
+    files bootJar.archiveFile.get().asFile
+    buildArgs(['JAR_FILE': bootJar.archiveFile.get().asFile.absolutePath])
+}
+
+
+dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+//    implementation(mavenPom("org.springframework.cloud:spring-cloud-dependencies:2022.0.2"))
+//    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.2"))
+// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation "io.github.resilience4j:resilience4j-circuitbreaker"
+//    implementation "io.github.resilience4j:resilience4j-ratelimiter"
+//    implementation "io.github.resilience4j:resilience4j-retry"
+//    implementation "io.github.resilience4j:resilience4j-bulkhead"
+//    implementation "io.github.resilience4j:resilience4j-cache"
+    implementation "io.github.resilience4j:resilience4j-timelimiter"
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.6'
+    // https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-spring-boot3
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.0.2'
+
+//    implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
+//    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+//    implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-resource-server
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-jose
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+
+
+}
+
+dependencyManagement {
+    imports {
+         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}

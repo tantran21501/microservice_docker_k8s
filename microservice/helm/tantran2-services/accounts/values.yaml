@@ -1,0 +1,20 @@
+deploymentName: accounts-deployment
+deploymentLabel: accounts
+
+replicaCount: 2
+
+image:
+  repository: tantran2/microservice_accounts_service
+  tag: latest
+
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+config_enabled: true
+profile_enabled: true
+eureka_enabled: true
+keycloak_enabled: false

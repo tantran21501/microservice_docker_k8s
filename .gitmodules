@@ -1,0 +1,3 @@
+[submodule "gitconfig"]
+	path = gitconfig
+	url = https://github.com/tancodegym/microservice-config

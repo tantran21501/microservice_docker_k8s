@@ -1,0 +1,20 @@
+deploymentName: configserver-deployment
+deploymentLabel: configserver
+
+replicaCount: 1
+
+image:
+  repository: tantran2/configserver
+  tag: latest
+
+containerPort: 8071
+
+service:
+  type: ClusterIP
+  port: 8071
+  targetPort: 8071
+
+config_enabled: false
+profile_enabled: true
+eureka_enabled: false
+keycloak_enabled: false

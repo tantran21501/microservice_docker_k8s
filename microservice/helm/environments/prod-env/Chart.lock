@@ -1,0 +1,24 @@
+dependencies:
+- name: tantran2-common
+  repository: file://../../tantran2-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../tantran2-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../tantran2-services/eurekaserver
+  version: 0.1.0
+- name: accounts
+  repository: file://../../tantran2-services/accounts
+  version: 0.1.0
+- name: cards
+  repository: file://../../tantran2-services/cards
+  version: 0.1.0
+- name: loans
+  repository: file://../../tantran2-services/loans
+  version: 0.1.0
+- name: gatewayserver
+  repository: file://../../tantran2-services/gatewayserver
+  version: 0.1.0
+digest: sha256:5bc8b9133725685a20b8bc97532a1e8569517172fada18993c5d86f703170339
+generated: "2023-05-10T08:44:04.976599+07:00"

@@ -1,0 +1,6 @@
+dependencies:
+- name: tantran2-common
+  repository: file://../../tantran2-common
+  version: 0.1.0
+digest: sha256:b71aa1a67778a062ce23bce9ca57d2a6b43b0d226a34fc17ac7624f2048b7e60
+generated: "2023-05-09T16:53:05.704851+07:00"
